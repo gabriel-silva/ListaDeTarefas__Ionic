@@ -10,7 +10,7 @@ export class TaskService {
     public storage: Storage
   ) { }
 
-  getAll(): Promise<Task[]> {
+  getAll(reserve?: boolean): Promise<Task[]> {
     
     return this.storage.ready()
       .then((localForage: LocalForage) => {
@@ -23,7 +23,7 @@ export class TaskService {
             tasks.push(task);
           }
 
-        }).then(() => tasks);
+        }).then(() => (!reserve) ? tasks : tasks.reverse());
 
       });
 

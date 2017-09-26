@@ -20,20 +20,41 @@ export class HomePage {
   ) { }
 
   ionViewDidLoad() {
-    this.taskService.getAll()
+    this.taskService.getAll(true)
       .then((tasks: Task[]) => {
         this.tasks = tasks;
       });
   }
 
-  onSave(type: string, itemSliding?: ItemSliding, task?: Task): void{
+  onSave(type: string, itemSliding?: ItemSliding, task?: Task): void {
     let title: string = type.charAt(0).toUpperCase() + type.substr(1);
     let options = {
       title: `${title} task`,
-      itemSliding: ItemSliding, 
+      itemSliding: ItemSliding,
       type: type
     }
     this.showAlert(options, task);
+  }
+
+  onDelete(task: Task): void {
+    this.alertCtrl.create({
+      title: `Do you want to delete '${task.title}' task?`,
+      buttons: [
+        {
+          text: 'Yes',
+          handler: () => {
+            let loading: Loading = this.showLoading(`Deleting ${task.title}...`)
+
+            this.taskService.delete(task.id)
+              .then((deleted: boolean) => {
+                this.tasks.splice(this.tasks.indexOf(task), 1);
+                loading.dismiss();
+              });
+          }
+        },
+        'No'
+      ]
+    }).present();
   }
 
   // os atributos do options é obrigatório
@@ -72,14 +93,12 @@ export class HomePage {
 
             this.taskService[options.type](contextTask)
               .then((savedTask: Task) => {
-                if (options.type === 'create') {
-                  this.tasks.unshift(savedTask);
-                  loading.dismiss();
-                }
-                if (options.itemSliding) {
-                  options.itemSliding.close();
-                }
+              
+                if (options.type === 'create') this.tasks.unshift(savedTask);
+                loading.dismiss();
 
+                if (options.itemSliding) options.itemSliding.close;
+              
               });
           }
 
