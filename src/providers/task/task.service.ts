@@ -11,9 +11,11 @@ export class TaskService {
   ) { }
 
   getAll(): Promise<Task[]> {
-
     return fn();
+  }
 
+  getById(id: number): Promise<Task>{
+    return this.storage.get(`tasks.${id}`); //exemplo: task.45657687 
   }
 
 }
