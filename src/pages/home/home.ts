@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, Loading, AlertOptions, AlertController } from 'ionic-angular';
+import { NavController, LoadingController, Loading, AlertOptions, AlertController, ItemSliding } from 'ionic-angular';
 
 import { TaskService } from './../../providers/task/task.service';
 import { Task } from './../../models/task.model';
@@ -24,6 +24,16 @@ export class HomePage {
       .then((tasks: Task[]) => {
         this.tasks = tasks;
       });
+  }
+
+  onSave(type: string, itemSliding?: ItemSliding, task?: Task): void{
+    let title: string = type.charAt(0).toUpperCase() + type.substr(1);
+    let options = {
+      title: `${title} task`,
+      itemSliding: ItemSliding, 
+      type: type
+    }
+    this.showAlert(options, task);
   }
 
   // os atributos do options é obrigatório
