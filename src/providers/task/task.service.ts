@@ -22,6 +22,10 @@ export class TaskService {
     return this.storage.set(`tasks.${task.id}`, task);
   }
 
+  update(task: Task): Promise<Task>{
+    return this.create(task);
+  }
+
 }
 
 function fn() {
