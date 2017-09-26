@@ -27,6 +27,8 @@ export class HomePage {
 
   private showLoading(message?: string): Loading {
     let loading: Loading = this.loadingCtrl.create({
+      // message ==> uma variavel opcional, se a variavel não for chamada
+      // a messagem "Aguarde um momento será acionada"
       content: message || 'Aguarde um momento...'
     });
     loading.present();
