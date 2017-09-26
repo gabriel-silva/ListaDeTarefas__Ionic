@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 
+import { TaskService } from './../../providers/task/task.service';
 import { Task } from './../../models/task.model';
 
 @Component({
@@ -8,15 +9,19 @@ import { Task } from './../../models/task.model';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  
+  tasks: Task[] = [];
 
+  constructor(
+    public navCtrl: NavController,
+    public taskService: TaskService
+  ) {}
 
-  tasks: Task[] = [
-    new Task('Estudar Angular'),
-    new Task('Estudar Ionic')
-  ];
-
-  constructor(public navCtrl: NavController) {
-
+  ionViewDidLoad(){
+    this.taskService.getAll()
+    .then((tasks: Task[]) => {      
+      this.tasks = tasks;
+    });
   }
 
 }

@@ -5,8 +5,13 @@
       Ionic Storage Tasks
     </ion-title>
 
+    <!-- botão de + no lado direito do title -->
+    <!-- end ==> diretiva -->
     <ion-buttons end>
+      <!-- botão -->
+      <!-- (click)="onSave" ==> eventBind -->
       <button ion-button icon-only (click)="onSave('create')">
+        <!-- icone de + -->
         <ion-icon name="add"></ion-icon>
       </button>
     </ion-buttons>
@@ -14,29 +19,45 @@
   </ion-navbar>
 </ion-header>
 
+<!-- layout principal -->
 <ion-content padding>
+
+  <!-- paragrafo -->
+  <!-- *ngIf == if(){} -->
+  <!-- *ngIf ==> diretiva estrutural -->
+  <!-- tasks array de tarefas -->
   <p *ngIf="tasks && tasks.length == 0; else tasksList">No tasks.</p>
 
+  <!-- #taskList variavel de template associada ao tasksList -->
   <ng-template #tasksList>
     <ion-list>
-
+      <!-- let task ==> variavel local  -->
+      <!-- *ngFor ==> diretiva estrutural -->
+      <!-- #taskSliding variavel de template -->
       <ion-item-sliding *ngFor="let task of tasks" #itemSliding>
 
         <ion-item>
+          <!-- {{ task.title }} ==> interpolação -->
           <ion-label>{{ task.title }}</ion-label>
+          <!-- [ngModel] ==> prototypeBind-->
+          <!-- (ngModelChange) ==> eventBind -->
+          <!-- toda vez que alterar o task.done o ngModel pega o valor(true/false) como protitypeBind, que 
+            passará para ngModelChange como event bind, depois ele mandará para o taskService que irá atualizar a tarefa  -->
           <ion-toggle [ngModel]="task.done" (ngModelChange)="task.done=$event; taskService.update(task)"></ion-toggle>
         </ion-item>
 
         <ion-item-options side="left">
-        
+
+          <!-- (click)="onSave" ==> eventBind -->
           <button ion-button icon-only color="primary" (click)="onSave('update', itemSliding, task)">
             <ion-icon name="create"></ion-icon>
           </button>
-        
+
+          <!-- (click)="onDelete" ==> eventBind -->
           <button ion-button icon-only color="danger" (click)="onDelete(task)">
             <ion-icon name="trash"></ion-icon>
           </button>
-        
+
         </ion-item-options>
       </ion-item-sliding>
 
