@@ -18,6 +18,10 @@ export class TaskService {
     return this.storage.get(`tasks.${id}`); //exemplo: task.45657687 
   }
 
+  create(task: Task): Promise<Task>{
+    return this.storage.set(`tasks.${task.id}`, task);
+  }
+
 }
 
 function fn() {
